@@ -3,12 +3,12 @@ package ie.gmit.sw;
 import java.io.*;
 import java.util.*;
 
-public class Parser {
+public class Parser extends FourSquareCipher {
 	public void parse (String file) {
 		try {
 			//Declaring objects and variables
 			BufferedReader br = new BufferedReader(new FileReader(file));
-			ArrayDeque<String> ad = new ArrayDeque<String>();
+			//ArrayDeque<String> ad = new ArrayDeque<String>();
 			String line;
 			int i;
 			char charA, charB;
@@ -26,9 +26,11 @@ public class Parser {
 						charA = line.charAt(i); 
 						charB  = line.charAt(i+1);
 						bigram = ""+charA+charB;
-						System.out.println(bigram);
-						String[] cipher = bigram.split("\\s+");
-						ad.addAll(Arrays.asList(cipher));
+						//System.out.println(bigram);
+						FourSquareCipher.getBigram(charA, charB);
+						FourSquareCipher.encrypt();
+						//String[] cipher = bigram.split("\\s+");
+						//ad.addAll(Arrays.asList(cipher));
 						charA = charB = ' ';
 						bigram = null;
 					} catch (StringIndexOutOfBoundsException siobe){
