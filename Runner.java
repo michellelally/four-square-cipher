@@ -6,14 +6,12 @@ public class Runner {
 	
 		//calculations.cal();
 		
-			long startTime = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 		Parser p = new Parser();
-		p.parseFile("./Input/test.txt");
-		long runningTime = System.currentTimeMillis() - startTime; 
-		System.out.println("\n\nRunning time (ms):"+ runningTime);
-		
-
-		
+		p.parseFile("./Input/WarAndPeace.txt");
+	//	long runningTime = System.currentTimeMillis() - startTime; 
+		System.out.println("\n\nRunning time (ms):" + (System.currentTimeMillis() - startTime));
+	
 /*
 		
 		Menu m = new Menu();

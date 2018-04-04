@@ -18,7 +18,6 @@ public class Parser extends FourSquareCipher{
 			String line;
 			int i;
 			char charA, charB;
-			boolean consoleOrFile = true;
 			
 			while ((line = br.readLine()) != null) {
 				//Replacing each j with an i, each q with an o
@@ -32,8 +31,9 @@ public class Parser extends FourSquareCipher{
 					if (charA == ' ' || charB == ' ') {
 						System.out.print(" ");
 					}
-				//	FourSquareCipher.encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
-					FourSquareCipher.decrypt(keyOne1D,keyTwo1D, charA, charB, alphabet);
+					
+					FourSquareCipher.encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
+				//	FourSquareCipher.decrypt(keyOne1D,keyTwo1D, charA, charB, alphabet);
 				}
 			}
 			br.close();

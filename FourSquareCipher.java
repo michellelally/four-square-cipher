@@ -73,7 +73,7 @@ public class FourSquareCipher {
 		letterOneEnc = key1[letterOneRow][letterTwoColumn];
 		letterTwoEnc = key2[letterTwoRow][letterOneColumn];
 		
-		System.out.print(letterOneEnc+""+letterTwoEnc+"");
+		System.out.print(letterOneEnc+""+letterTwoEnc);
 		//System.out.print(output);
 	/*	try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
 			bw.write(letterOneEnc+""+letterTwoEnc);
