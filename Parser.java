@@ -10,7 +10,6 @@ public class Parser extends FourSquareCipher{
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		BufferedReader br = null;
-	
 		try {
 			///Declaring objects and variables
 			fis = new FileInputStream(file);
@@ -33,8 +32,8 @@ public class Parser extends FourSquareCipher{
 					if (charA == ' ' || charB == ' ') {
 						System.out.print(" ");
 					}
-					FourSquareCipher.encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
-				//	FourSquareCipher.decrypt(alphabet);
+				//	FourSquareCipher.encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
+					FourSquareCipher.decrypt(keyOne1D,keyTwo1D, charA, charB, alphabet);
 				}
 			}
 			br.close();

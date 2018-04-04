@@ -14,10 +14,13 @@ import java.util.*;
 public class FourSquareCipher {
 	static char letterOneEnc, letterTwoEnc; 
 	static int letterOneRow, letterOneColumn, letterTwoRow, letterTwoColumn;
-	char let1, let2;
+//	char let1, let2;
 	private static final String FILENAME = "./Output//Output.txt";
 
 	char[]alphabet1D =  {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', ' ', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+	char[] keyOne1D =  {'Z', 'G', 'P', 'T', 'F','O', 'I', 'H', 'M', 'U', 'W', 'D', 'R', 'C', 'N','Y', 'K', 'E', 'Q', 'A','X', 'V', 'S', 'B', 'L'};
+	char[] keyTwo1D = {'M', 'F', 'N', 'B', 'D','C', 'R', 'H', 'S', 'A','X', 'Y', 'O', 'G', 'V','I', 'T', 'U', 'E', 'W','L', 'Q', 'Z', 'K', 'P'};
+	
 
 	char[][] alphabet =  {
 		{'A', 'B', 'C', 'D', 'E'},
@@ -78,46 +81,50 @@ public class FourSquareCipher {
 			e.printStackTrace();
 			
 		}
-		
- 
-	/*	System.out.println("\nA Row: " + letterOneRow);
-		System.out.println("A Column: " + letterOneColumn);
-		System.out.println("B Row: " + letterTwoRow);
-		System.out.println("B Column: " + letterTwoColumn); */
-		
-		
+*/		
 	}
 	
 	//----------------------------------------------------------------------------------------------------------
 	//---------------------------------------------DECRYPTION---------------------------------------------------
 	//----------------------------------------------------------------------------------------------------------
 	
-	//Running time: O(1)
-	public static char getIndexesEncLetterOne(char[][] alpha) {
-		char letterOneDec = alpha[letterOneRow][letterOneColumn];
-		return letterOneDec;
-	}
-
-	//Running time: O(1)
-	public static char getIndexesEncLetterTwo(char[][] alpha) {
-		char letterTwoDec =  alpha[letterTwoRow][letterTwoColumn];
-		return letterTwoDec;
-	}
-
-	//Running time: O(1)
-	public static void decrypt(char[][] alphabet)  {
-		String output = getIndexesEncLetterOne(alphabet)+""+getIndexesEncLetterTwo(alphabet);
-		//System.out.print(output);
-	/*	try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME))) {
-			
-			bw.write(output);
-		} catch (IOException e) {
-			e.printStackTrace();
-			
+	static char letterOneDec, letterTwoDec;
+	static int letterOneEncRow, letterOneEncColumn, letterTwoEncRow, letterTwoEncColumn;
+	
+	public static void getIndexesEncLetterOne(char[] array, char let1) {
+		for(int i = 0; i < array.length; i++) {
+			if (array[i] == let1) {
+				letterOneEncRow = i / 5;
+				letterOneEncColumn = i % 5;
+			}
 		}
-		
- */
 	}
+
+	
+	public static void getIndexesEncLetterTwo(char[] array, char let2) {
+		for(int i = 0; i < array.length; i++) {
+			if (array[i] == let2) {
+				letterTwoEncRow = i / 5;
+				letterTwoEncColumn = i % 5;
+			}
+		}
+	}
+
+	public static void decrypt(char key1[], char key2[], char let1, char let2, char[][] alphabet) {
+		getIndexesEncLetterOne(key1, let1);
+		getIndexesEncLetterTwo(key2, let2);
+ 
+		letterOneDec = alphabet[letterOneEncRow][letterTwoEncColumn];
+		letterTwoDec = alphabet[letterTwoEncRow][letterOneEncColumn];
+		System.out.print(letterOneDec+""+letterTwoDec);
+	/*	System.out.println("\nA Row: " + letterOneEncRow);
+		System.out.println("A Column: " + letterOneEncColumn);
+		System.out.println("B Row: " + letterTwoEncRow);
+		System.out.println("B Column: " + letterTwoEncColumn);
+		
+	
+		 */
+}
 	
 	public static void generateRandomKey(char key[][]) {
 		Random r = new Random();

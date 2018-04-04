@@ -29,8 +29,8 @@ public class Menu extends Parser{
 			System.out.println("Generating key...");
 			//FourSquareCipher fsc = new FourSquareCipher();
 			System.out.print("\nYour randomly generated key is: ");
-			FourSquareCipher.generateRandomKey(keyOne);
-			FourSquareCipher.generateRandomKey(keyTwo);
+	//		FourSquareCipher.generateRandomKey(keyOne);
+		//	FourSquareCipher.generateRandomKey(keyTwo);
 		}
 		
 	}
