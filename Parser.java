@@ -1,25 +1,26 @@
 package ie.gmit.sw;
 
 import java.io.*;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.net.*;
 
 public class Parser extends FourSquareCipher{
+	public void parseFile(String file) {
+		//Declaring objects needed for file reading
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		BufferedReader br = null;
 	
-	public Parser(String fileName) {
-		this.parse(fileName);
-	}
-
-	public void parse (String file) {
 		try {
-			//Declaring objects and variables
-			BufferedReader br = new BufferedReader(new FileReader(file));
-		//	ArrayDeque<String> ad = new ArrayDeque<String>();
+			///Declaring objects and variables
+			fis = new FileInputStream(file);
+			bis = new BufferedInputStream(fis);	
+			br = new BufferedReader(new InputStreamReader(bis, StandardCharsets.UTF_8));
 			String line;
 			int i;
 			char charA, charB;
-		//	String bigram;
+			boolean consoleOrFile = true;
 			
-			//Reading in each line of the file 
 			while ((line = br.readLine()) != null) {
 				//Replacing each j with an i, each q with an o
 				line = line.toUpperCase().replaceAll("[^A-Z]", " ").replace('J', 'I').replace("Q", "O"); 
@@ -29,16 +30,45 @@ public class Parser extends FourSquareCipher{
 				for (i = 0; i < line.length(); i+=2) {
 					charA = line.charAt(i); 
 					charB  = line.charAt(i+1);
+					if (charA == ' ' || charB == ' ') {
+						System.out.print(" ");
+					}
 					FourSquareCipher.encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
-					FourSquareCipher.decrypt(alphabet);
-					//String[] cipher = bigram.split("\\s+");
-					//ad.addAll(Arrays.asList(cipher));
+				//	FourSquareCipher.decrypt(alphabet);
 				}
 			}
-			br.close();	
+			br.close();
 		} catch (IOException e) {
 		e.printStackTrace();
 		}
-	}
-}
+	}// eo parse
+	
+	 public void parseURL(String url) throws Exception {
+	        
+		 	URL website = new URL(url);
+	        URLConnection connection = website.openConnection();
+	        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	
+	        //StringBuilder response = new StringBuilder();
+	        String line;
+	        int i;
+	        char charA, charB;
+	
+	        while ((line = in.readLine()) != null) {
+	        	//Replacing each j with an i, each q with an o
+	        	line = line.toUpperCase().replaceAll("[^A-Z]", " ").replace('J', 'I').replace("Q", "O"); 
+				if (line.length() % 2 != 0) {
+					line += " ";
+				}
+				for (i = 0; i < line.length(); i+=2) {
+					charA = line.charAt(i); 
+					charB  = line.charAt(i+1);
+					System.out.print(charA+""+charB);
+					//FourSquareCipher.encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
+					//FourSquareCipher.decrypt(alphabet);
+				}
+	        }
+	        in.close();
+	    }
+}//eo class
 
