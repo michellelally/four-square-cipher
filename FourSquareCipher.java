@@ -1,18 +1,6 @@
 package ie.gmit.sw;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.util.Random;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
-
-
 
 public class FourSquareCipher {
 	
@@ -20,7 +8,7 @@ public class FourSquareCipher {
 	static int letterOneRow, letterOneColumn, letterTwoRow, letterTwoColumn;
 //	char let1, let2;
 
-	char[]alphabet1D =  {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', ' ', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+	char[]alphabet1D =  {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 	char[] keyOne1D =  {'Z', 'G', 'P', 'T', 'F','O', 'I', 'H', 'M', 'U', 'W', 'D', 'R', 'C', 'N','Y', 'K', 'E', 'Q', 'A','X', 'V', 'S', 'B', 'L'};
 	char[] keyTwo1D = {'M', 'F', 'N', 'B', 'D','C', 'R', 'H', 'S', 'A','X', 'Y', 'O', 'G', 'V','I', 'T', 'U', 'E', 'W','L', 'Q', 'Z', 'K', 'P'};
 	
@@ -29,7 +17,7 @@ public class FourSquareCipher {
 		{'A', 'B', 'C', 'D', 'E'},
 		{'F', 'G', 'H', 'I', 'K'},
 		{'L', 'M', 'N', 'O', 'P'},
-		{' ', 'R', 'S', 'T', 'U'},
+		{'Q', 'R', 'S', 'T', 'U'},
 		{'V', 'W', 'X', 'Y', 'Z'}
 	};	
 	
@@ -92,6 +80,7 @@ public class FourSquareCipher {
 	static char letterOneDec, letterTwoDec;
 	static int letterOneEncRow, letterOneEncColumn, letterTwoEncRow, letterTwoEncColumn;
 	
+	//Running time: O(N^2)
 	public static void getIndexesEncLetterOne(char[] array, char let1) {
 		for(int i = 0; i < array.length; i++) {
 			if (array[i] == let1) {
@@ -101,7 +90,7 @@ public class FourSquareCipher {
 		}
 	}
 
-	
+	//Running time: O(N^2)
 	public static void getIndexesEncLetterTwo(char[] array, char let2) {
 		for(int i = 0; i < array.length; i++) {
 			if (array[i] == let2) {
@@ -114,9 +103,16 @@ public class FourSquareCipher {
 	public static void decrypt(char key1[], char key2[], char let1, char let2, char[][] alphabet) {
 		getIndexesEncLetterOne(key1, let1);
 		getIndexesEncLetterTwo(key2, let2);
-		letterOneDec = alphabet[letterOneEncRow][letterTwoEncColumn];
-		letterTwoDec = alphabet[letterTwoEncRow][letterOneEncColumn];
-		System.out.print(letterOneDec+""+letterTwoDec);
+		if (let1 == ' ') {
+			letterOneDec = ' ';
+		} else {
+			letterOneDec = alphabet[letterOneEncRow][letterTwoEncColumn];
+		}
+		if (let2 == ' ') {
+			letterTwoDec = ' ';
+		} else {
+			letterTwoDec = alphabet[letterTwoEncRow][letterOneEncColumn];
+		}	
 }
 	
 	//Fisher-Yates algorithm for shuffling an array, modified for a two dimensional array
@@ -128,8 +124,7 @@ public class FourSquareCipher {
 	            int n = random.nextInt(j + 1);
 	            char temp = key[i][j];
 	            key[i][j] = key[m][n];
-	            key[m][n] = temp;
-	           
+	            key[m][n] = temp;	           
 			}
 		}
 	}
@@ -140,6 +135,25 @@ public class FourSquareCipher {
 				System.out.print(key[i][j]);
 			}
 		}
+	}
+	
+	public static void setKey(String strKey, char[] alpha, char[][] key) { //encOrDec?
+		String alphabet = new String(alpha);
+		int x = 0;
+		while (strKey.length() < alpha.length ){
+			
+		//	String letter = Character.toString(alphabet.charAt(1));
+		    strKey = strKey.concat(Character.toString(alphabet.charAt(x)));
+		    x++;
+		} 
+		System.out.println("Key: " + strKey);
+		/*
+		for (int i = 0; i < key.length; i++) {
+			for (int j = 0; j <key.length; j++) {
+				key[i][j] = 
+			}
+		}
+		*/
 	}
 
 	

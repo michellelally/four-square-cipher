@@ -2,54 +2,10 @@ package ie.gmit.sw;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.net.*;
 
-public class Parser extends FourSquareCipher{
-	public void parseFile(String file,int outputType) throws FileNotFoundException { //file or console, encrypting or decrypting
-		//Declaring objects needed for file reading
-	//	System.out.print("ENTERING PARSEFILE METHOD");
-		FileInputStream fis = null;
-		BufferedInputStream bis = null;
-		BufferedReader br = null;
-		try {
-			///Declaring objects and variables
-			fis = new FileInputStream(file);
-			bis = new BufferedInputStream(fis);	
-			br = new BufferedReader(new InputStreamReader(bis, StandardCharsets.UTF_8));
-			String line;
-			System.out.println("\nEncrypting file...\n");
-			while ((line = br.readLine()) != null) {
-				//Replacing each j with an i, each q with an o
-				line = line.toUpperCase().replaceAll("[^A-Z]", " ").replace('J', 'I').replace("Q", "O"); 
-				
-				bigramAndEncrypt(line, outputType);
-				
-				
-			}
-			
-			System.out.println("\n\nEncryption completed.");
-			br.close();
-			
-		} catch (IOException e) {
-		e.printStackTrace();
-		}
-	}// eo parse
-	
-	 public void parseURL(String url, int outputType) throws Exception {
-		 	URL website = new URL(url);
-	        URLConnection connection = website.openConnection();
-	        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-	        String line;
-
-	        while ((line = in.readLine()) != null) {
-	        	//Replacing each j with an i, each q with an o
-	        	line = line.toUpperCase().replaceAll("[^A-Z]", " ").replace('J', 'I').replace("Q", "O");
-	        	bigramAndEncrypt(line, outputType);
-	        }
-	        in.close();
-	    }
-	 
-	 public void bigramAndEncrypt(String line, int outputType) {
+public class Parser extends FourSquareCipher {	
+	//O(n)
+	 public void bigramAndCipher(String line, byte outputType, byte encOrDec, PrintWriter out) {
 		 char charA, charB;
 		 int i;
 			if (line.length() % 2 != 0) {
@@ -58,11 +14,67 @@ public class Parser extends FourSquareCipher{
 			for (i = 0; i < line.length(); i+=2) {
 				charA = line.charAt(i); 
 				charB  = line.charAt(i+1);
-				FourSquareCipher.encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
-				//String output = ;
-				
-				System.out.print(letterOneEnc+""+letterTwoEnc);
+				switch(encOrDec) {
+				case 1:
+					encrypt(alphabet1D, charA, charB, keyOne, keyTwo);
+					output(letterOneEnc, letterTwoEnc, outputType, out);
+					break;
+				case 2: 
+					decrypt(keyOne1D,keyTwo1D, charA, charB, alphabet);
+					output(letterOneDec, letterTwoDec, outputType, out);
+					break;
+				default:
+					break;	
+				}
 			}
 	 }
+	 
+	 public void output(char charA, char charB, byte outputType, PrintWriter out){
+		 switch (outputType) {
+		 case 1:
+			 System.out.print(charA+""+charB);
+			 break;
+		 case 2:
+			 out.print(charA+""+charB);
+			 break;
+		 }
+		 
+	 }
+	
+	//O(n^n)
+	public void parseFile(String file, byte outputType, byte encOrDec) throws FileNotFoundException {
+		//Declaring objects needed for file reading
+		long startTime = System.currentTimeMillis();
+		
+		try {
+			///Declaring objects needed for reading the file
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(fis);	
+			BufferedReader br = new BufferedReader(new InputStreamReader(bis, StandardCharsets.UTF_8));
+			
+			///Declaring objects needed for outputting the file
+			File fileOutput = new File("./Output.txt");
+			fileOutput.createNewFile();
+			PrintWriter pw = new PrintWriter(fileOutput); 
+			
+			//Variables
+			String line;
+			
+			System.out.println("\nReading... Ciphering...\n");
+			//Reading the file line by line, Replacing each j with an i, each q with an o and then calling the bigramAndCipher() method
+			while ((line = br.readLine()) != null) {
+				line = line.toUpperCase().replaceAll("[^A-Z]", " ").replace('J', 'I'); 
+				bigramAndCipher(line, outputType, encOrDec, pw);
+			}
+			
+			System.out.println("\nCipher complete in :" + (System.currentTimeMillis() - startTime) + "(ms)");
+
+			br.close();	
+			pw.close();
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+	}// eo parse
+	 
 }//eo class
 
