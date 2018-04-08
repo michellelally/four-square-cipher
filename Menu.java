@@ -1,9 +1,16 @@
 package ie.gmit.sw;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class Menu extends Parser {
 	Scanner console = new Scanner(System.in);
+	JFileChooser fc = new JFileChooser();
 	public void go() throws Exception {
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		System.out.println(":                        Four Square Cipher                       :");
@@ -11,6 +18,20 @@ public class Menu extends Parser {
 		System.out.println(":                              Menu                               :");
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		keyOptions();
+		
+		System.out.println("\n" +"What would you like to do next?");
+		System.out.println("\n" +  "|1| Encrypt" + "\n" + "|2| Decrypt" + "\n" + "|3| Change the key" + "\n" + "|4| Quit\n");
+		System.out.print("|>|");
+		byte choice = console.nextByte();
+		
+		while (choice !=4) {
+			mainOptions(choice);
+			System.out.println("\n\n" +"What would you like to do next?");
+			System.out.println("\n" +  "|1| Encrypt" + "\n" + "|2| Decrypt" + "\n" + "|3| Change the key" + "\n" + "|4| Quit\n");
+			System.out.print("|>|");
+			choice = console.nextByte();
+		}
+			
 	}
 	
 	public void keyOptions() throws Exception {
@@ -26,11 +47,15 @@ public class Menu extends Parser {
 				generateRandomKey(alphabet);
 				displayKey(keyOne);
 				displayKey(keyTwo);
+				System.out.print("\n");
 			break;
 			case 2:
 				System.out.println("Please enter the keyword." + "\n");
 				String keyword = console.next();
 				setKey(keyword, alphabet1D, keyOne);
+				setKey(keyword, alphabet1D, keyTwo);
+				displayKey(keyOne);
+				displayKey(keyTwo);
 			break;
 			case 3:
 				System.out.print("\nYour key is: ");
@@ -42,15 +67,10 @@ public class Menu extends Parser {
 				keyOptions();
 			break;
 		}//eo switch
-		mainOptions();
 	}
 	
-	public void mainOptions() throws Exception {
-		System.out.println("\n" +"What would you like to do next?");
-		System.out.println("\n" +  "|1| Encrypt" + "\n" + "|2| Decrypt" + "\n" + "|3| Change the key" + "\n" + "|4| Quit\n");
-		System.out.print("|>|");
-		byte choice = console.nextByte();
-		while (choice != 4) {
+	public void mainOptions(byte choice) throws Exception {
+
 			switch (choice) {
 			case 1:
 				cipherMenu(choice);
@@ -60,31 +80,26 @@ public class Menu extends Parser {
 			break;
 			case 3: 
 				keyOptions();
-			case 4: 
-				System.exit(0);
+				break;
 			default:
 				System.out.println("Please choose an option that is listed.");
-				mainOptions();
-			break;
-			}
 		}
+			
 	}
 	
 	public void cipherMenu(byte choice) throws Exception {
-		switch (readingFrom()) {
+			switch (readingFrom()) {
 			case 1:
-				parseFile(setAddress(), outputType(), choice);
-			break;
+				parseFile(setPath(), outputType(), choice);			
+				break;
 			case 2:
-				ParseURL p = new ParseURL();
-				p.parseURL(setAddress(), outputType(), choice);
-			break;
+				parseURL(choice);
+				break;
 			default:
 				System.out.println("Please choose an option that is listed.");
 				cipherMenu(choice);
 			break;	
-		}
-		mainOptions();
+			}
 	}
 
 	
@@ -96,13 +111,31 @@ public class Menu extends Parser {
 		return choice; 	
 	}
 	
-	public String setAddress() {
-		System.out.println("\nPlease enter the address:\n");
-		System.out.print("|>|");
-		String address = console.next();
-		return address;
+	public String setPath() {
+		String address = "";
+		fc.setCurrentDirectory(new File("./Input/"));
+        int fileChooseResult = fc.showOpenDialog(null);
+
+        if (fileChooseResult == JFileChooser.APPROVE_OPTION) {
+          address = fc.getSelectedFile().getAbsolutePath();
+        }
+        return address;
 	}
 	
+	public void parseURL(byte choice) throws Exception {
+		String input = JOptionPane.showInputDialog("Please enter the URL.");
+        boolean urlValid = false;
+
+        while (!urlValid) {
+          try {
+            urlValid = true;
+            new ParseURL().parseURL(input, outputType(), choice);
+          } catch (MalformedURLException e) {
+            input = JOptionPane.showInputDialog("Invalid URL, try again!");
+          }
+        }
+	}
+      
 	public byte outputType() {
 		System.out.println("\nPlease choose where you would like the encrypted data to be displayed");
 		System.out.println("\n" +"|1| Console" + "\n" + "|2| File" + "\n");
@@ -111,5 +144,4 @@ public class Menu extends Parser {
 		return choice; 	
 	}
 	
-
 }

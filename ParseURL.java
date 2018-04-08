@@ -13,8 +13,11 @@ public class ParseURL extends Parser{
 	 public void parseURL(String url, byte outputType, byte encOrDec) throws Exception {
 	 	URL website = new URL(url);
         URLConnection connection = website.openConnection();
+        
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        
         String line;
+        
 		File fileOutput = new File("./Output.txt");
 		fileOutput.createNewFile();
 		PrintWriter pw = new PrintWriter(fileOutput); 

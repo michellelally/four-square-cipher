@@ -116,6 +116,7 @@ public class FourSquareCipher {
 }
 	
 	//Fisher-Yates algorithm for shuffling an array, modified for a two dimensional array
+	//O(n^2)
 	public static void generateRandomKey(char key[][]) {
 		Random random = new Random();
 		for (int i = 0; i < key.length; i++) {
@@ -141,20 +142,17 @@ public class FourSquareCipher {
 		String alphabet = new String(alpha);
 		int x = 0;
 		while (strKey.length() < alpha.length ){
-			
-		//	String letter = Character.toString(alphabet.charAt(1));
 		    strKey = strKey.concat(Character.toString(alphabet.charAt(x)));
 		    x++;
 		} 
-		System.out.println("Key: " + strKey);
-		/*
+	
+		char[] stringToChar = strKey.toCharArray();
+		
 		for (int i = 0; i < key.length; i++) {
 			for (int j = 0; j <key.length; j++) {
-				key[i][j] = 
+				key[i][j] = stringToChar[i*5+j];
 			}
 		}
-		*/
 	}
-
 	
 }//end of class

@@ -45,15 +45,14 @@ public class Parser extends FourSquareCipher {
 	public void parseFile(String file, byte outputType, byte encOrDec) throws FileNotFoundException {
 		//Declaring objects needed for file reading
 		long startTime = System.currentTimeMillis();
+		int bufferSize = 10240; 
 		
 		try {
 			///Declaring objects needed for reading the file
-			FileInputStream fis = new FileInputStream(file);
-			BufferedInputStream bis = new BufferedInputStream(fis);	
-			BufferedReader br = new BufferedReader(new InputStreamReader(bis, StandardCharsets.UTF_8));
-			
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"), bufferSize);
+				
 			///Declaring objects needed for outputting the file
-			File fileOutput = new File("./Output.txt");
+			File fileOutput = new File("./Output/Output.txt");
 			fileOutput.createNewFile();
 			PrintWriter pw = new PrintWriter(fileOutput); 
 			
@@ -68,9 +67,9 @@ public class Parser extends FourSquareCipher {
 			}
 			
 			System.out.println("\nCipher complete in :" + (System.currentTimeMillis() - startTime) + "(ms)");
-
 			br.close();	
 			pw.close();
+			
 		} catch (IOException e) {
 		e.printStackTrace();
 		}
